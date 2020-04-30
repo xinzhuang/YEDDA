@@ -6,17 +6,17 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from Tkinter import *
-from ttk import *#Frame, Button, Label, Style, Scrollbar
-import tkFileDialog
-import tkFont
+from tkinter import *
+from tkinter.ttk import *#Frame, Button, Label, Style, Scrollbar
+from  tkinter import filedialog
+import tkinter.font
 import re
 from collections import deque
 # import pickle
 import os.path
 import platform
 from utils.recommend import *
-import tkMessageBox
+import tkinter.messagebox
 import json
 
 
@@ -96,7 +96,7 @@ class Example(Frame):
 
         self.lbl = Label(self, text="File: no file is opened")
         self.lbl.grid(sticky=W, pady=4, padx=5)
-        self.fnt = tkFont.Font(family=self.textFontStyle,size=self.textRow,weight="bold",underline=0)
+        self.fnt = tkinter.font.Font(family=self.textFontStyle,size=self.textRow,weight="bold",underline=0)
         self.text = Text(self, font=self.fnt, selectbackground=self.selectColor)
         self.text.grid(row=1, column=0, columnspan=self.textColumn, rowspan=self.textRow, padx=12, sticky=E+W+S+N)
 
@@ -215,7 +215,7 @@ class Example(Frame):
         try:
             firstSelection_index = self.text.index(SEL_FIRST)
             cursor_index = self.text.index(SEL_LAST)
-            content = self.text.get('1.0',"end-1c").encode('utf-8')
+            content = self.text.get('1.0',"end-1c")
             self.writeFile(self.fileName, content, cursor_index)
         except TclError:
             pass
@@ -223,7 +223,7 @@ class Example(Frame):
     def setInRecommendModel(self):
         self.recommendFlag = True
         self.RecommendModelFlag.config(text = str(self.recommendFlag))
-        tkMessageBox.showinfo("Recommend Model", "Recommend Model has been activated!")
+        tkinter.messagebox.showinfo("Recommend Model", "Recommend Model has been activated!")
 
 
     def setInNotRecommendModel(self):
@@ -232,12 +232,12 @@ class Example(Frame):
         content = self.getText()
         content = removeRecommendContent(content,self.recommendRe)
         self.writeFile(self.fileName, content, '1.0')
-        tkMessageBox.showinfo("Recommend Model", "Recommend Model has been deactivated!")
+        tkinter.messagebox.showinfo("Recommend Model", "Recommend Model has been deactivated!")
 
 
     def onOpen(self):
         ftypes = [('all files', '.*'), ('text files', '.txt'), ('ann files', '.ann')]
-        dlg = tkFileDialog.Open(self, filetypes = ftypes)
+        dlg = filedialog.Open(self, filetypes = ftypes)
         # file_opt = options =  {}
         # options['filetypes'] = [('all files', '.*'), ('text files', '.txt')]
         # dlg = tkFileDialog.askopenfilename(**options)
@@ -254,7 +254,7 @@ class Example(Frame):
             self.setCursorLabel(self.text.index(INSERT))
 
     def readFile(self, filename):
-        f = open(filename, "rU")
+        f = open(filename, "r", encoding='utf-8')
         text = f.read()
         self.fileName = filename
         return text
@@ -264,7 +264,7 @@ class Example(Frame):
         _size = value
         _weight="bold"
         _underline=0
-        fnt = tkFont.Font(family= _family,size= _size,weight= _weight,underline= _underline)
+        fnt = tkinter.font.Font(family= _family,size= _size,weight= _weight,underline= _underline)
         Text(self, font=fnt)
 
     def setNameLabel(self, new_file):
@@ -342,7 +342,7 @@ class Example(Frame):
 
     def getText(self):
         textContent = self.text.get("1.0","end-1c")
-        textContent = textContent.encode('utf-8')
+        textContent = textContent
         return textContent
 
     def executeCursorCommand(self,command):
@@ -373,7 +373,7 @@ class Example(Frame):
                     entity_content, cursor_index = self.replaceString(selected_string, selected_string, command, cursor_index)
             aboveHalf_content += entity_content
             content = self.addRecommendContent(aboveHalf_content, afterEntity_content, self.recommendFlag)
-            content = content.encode('utf-8')
+            # content = content.encode('utf-8')
             self.writeFile(self.fileName, content, cursor_index)
         except TclError:
             ## not select text
@@ -434,7 +434,7 @@ class Example(Frame):
                 followHalf_content = line_after_entity
 
             content = self.addRecommendContent(aboveHalf_content, followHalf_content, self.recommendFlag)
-            content = content.encode('utf-8')
+            content = content
             self.writeFile(self.fileName, content, cursor_index)
 
 
@@ -457,9 +457,9 @@ class Example(Frame):
                     cursor_index = self.text.index(INSERT)
                     newcursor_index = cursor_index.split('.')[0]+"."+str(int(cursor_index.split('.')[1])+select_num)
                     # print "new cursor position: ", select_num, " with ", newcursor_index, "with ", newcursor_index
-                    selected_string = self.text.get(cursor_index, newcursor_index).encode('utf-8')
-                    aboveHalf_content = self.text.get('1.0',cursor_index).encode('utf-8')
-                    followHalf_content = self.text.get(cursor_index, "end-1c").encode('utf-8')
+                    selected_string = self.text.get(cursor_index, newcursor_index)
+                    aboveHalf_content = self.text.get('1.0',cursor_index)
+                    followHalf_content = self.text.get(cursor_index, "end-1c")
                     if command in self.pressCommand:
                         if len(selected_string) > 0:
                             # print "insert index: ", self.text.index(INSERT) 
@@ -476,10 +476,10 @@ class Example(Frame):
         print("delete insert:",get_insert)
         insert_list = get_insert.split('.')
         last_insert = insert_list[0] + "." + str(int(insert_list[1])-1)
-        get_input = self.text.get(last_insert, get_insert).encode('utf-8')
-        # print "get_input: ", get_input
-        aboveHalf_content = self.text.get('1.0',last_insert).encode('utf-8')
-        followHalf_content = self.text.get(last_insert, "end-1c").encode('utf-8')
+        get_input = self.text.get(last_insert, get_insert)
+        print("get_input: ", get_input)
+        aboveHalf_content = self.text.get('1.0',last_insert)
+        followHalf_content = self.text.get(last_insert, "end-1c")
         if len(get_input) > 0:
             followHalf_content = followHalf_content.replace(get_input, '', 1)
         content = aboveHalf_content + followHalf_content
@@ -506,12 +506,12 @@ class Example(Frame):
         if len(fileName) > 0:
             if ".ann" in fileName:
                 new_name = fileName
-                ann_file = open(new_name, 'w')
+                ann_file = open(new_name, 'w',encoding='utf-8')
                 ann_file.write(content)
                 ann_file.close()
             else:
                 new_name = fileName+'.ann'
-                ann_file = open(new_name, 'w')
+                ann_file = open(new_name, 'w', encoding='utf-8')
                 ann_file.write(content)
                 ann_file.close()
             # print "Writed to new file: ", new_name
@@ -663,7 +663,7 @@ class Example(Frame):
         with open(self.configFile, 'wb') as fp:
             json.dump(self.pressCommand, fp)
         self.setMapShow()
-        tkMessageBox.showinfo("Remap Notification", "Shortcut map has been updated!\n\nConfigure file has been saved in File:" + self.configFile)
+        tkinter.messagebox.showinfo("Remap Notification", "Shortcut map has been updated!\n\nConfigure file has been saved in File:" + self.configFile)
 
     ## save as new shortcut map
     def savenewPressCommand(self):
@@ -696,7 +696,7 @@ class Example(Frame):
         with open(self.configFile, 'wb') as fp:
             json.dump(self.pressCommand, fp)
         self.setMapShow()
-        tkMessageBox.showinfo("Save New Map Notification", "Shortcut map has been saved and updated!\n\nConfigure file has been saved in File:" + self.configFile)
+        tkinter.messagebox.showinfo("Save New Map Notification", "Shortcut map has been saved and updated!\n\nConfigure file has been saved in File:" + self.configFile)
 
     ## show shortcut map
     def setMapShow(self):
@@ -759,13 +759,13 @@ class Example(Frame):
         if (".ann" not in self.fileName) and (".txt" not in self.fileName):
             out_error = "Export only works on filename ended in .ann or .txt!\nPlease rename file."
             print(out_error)
-            tkMessageBox.showerror("Export error!", out_error)
+            tkinter.messagebox.showerror("Export error!", out_error)
 
             return -1
-        fileLines = open(self.fileName, 'rU').readlines()
+        fileLines = open(self.fileName, 'r', encoding='utf-8').readlines()
         lineNum = len(fileLines)
         new_filename = self.fileName.split('.ann')[0]+ '.anns'
-        seqFile = open(new_filename, 'w')
+        seqFile = open(new_filename, 'w', encoding='utf-8')
         for line in fileLines:
             if len(line) <= 2:
                 seqFile.write('\n')
@@ -787,16 +787,16 @@ class Example(Frame):
         showMessage += "Text Seged: " +str(self.seged) + "\n\n"
         showMessage += "Line Number: " + str(lineNum)+ "\n\n"
         showMessage += "Saved to File: " + new_filename
-        tkMessageBox.showinfo("Export Message", showMessage)
+        tkinter.messagebox.showinfo("Export Message", showMessage)
 
 
 def getConfigList():
     fileNames = os.listdir("./configs")
-    filteredFileNames = sorted(filter(lambda x: (not x.startswith(".")) and (x.endswith(".config")), fileNames))
+    filteredFileNames = sorted([x for x in fileNames if (not x.startswith(".")) and (x.endswith(".config"))])
     return list(filteredFileNames)
 
 def getWordTagPairs(tagedSentence, seged=True, tagScheme="BMES", onlyNP=False, entityRe=r'\[\@.*?\#.*?\*\]'):
-    newSent = tagedSentence.strip('\n').decode('utf-8')
+    newSent = tagedSentence.strip('\n')
     filterList = re.findall(entityRe, newSent)
     newSentLength = len(newSent)
     chunk_list = []
@@ -874,7 +874,7 @@ def turnFullListToOutputPair(fullList, seged=True, tagScheme="BMES", onlyNP=Fals
                 if basicContent == ' ':
                     continue
                 pair = basicContent + ' ' + 'O\n'
-                pairList.append(pair.encode('utf-8'))
+                pairList.append(pair)
     return pairList
 
 
@@ -884,7 +884,7 @@ def outputWithTagScheme(input_list, label, tagScheme="BMES"):
     if tagScheme=="BMES":
         if list_length ==1:
             pair = input_list[0]+ ' ' + 'S-' + label + '\n'
-            output_list.append(pair.encode('utf-8'))
+            output_list.append(pair)
         else:
             for idx in range(list_length):
                 if idx == 0:
@@ -893,14 +893,14 @@ def outputWithTagScheme(input_list, label, tagScheme="BMES"):
                     pair = input_list[idx]+ ' ' + 'E-' + label + '\n'
                 else:
                     pair = input_list[idx]+ ' ' + 'M-' + label + '\n'
-                output_list.append(pair.encode('utf-8'))
+                output_list.append(pair)
     else:
         for idx in range(list_length):
             if idx == 0:
                 pair = input_list[idx]+ ' ' + 'B-' + label + '\n'
             else:
                 pair = input_list[idx]+ ' ' + 'I-' + label + '\n'
-            output_list.append(pair.encode('utf-8'))
+            output_list.append(pair)
     return output_list
 
 

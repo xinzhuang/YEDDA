@@ -8,7 +8,7 @@
 import re
 import sys
 import numpy as np
-from metric4ann import *
+from .metric4ann import *
 import copy
 
 def lines_to_label_list(input_lines):
@@ -91,7 +91,7 @@ def compareBoundary(gold_file, pred_file, out_file):
 
 ## generate specific latex code for each sentence
 def generate_specific_latex(sentence, gold_entity_list, pred_entity_list):
-    print "".join(sentence)
+    print("".join(sentence))
     final_segment = generate_specific_segment(sentence, gold_entity_list, pred_entity_list)
     segment_dict = {}
     for segment in final_segment:
@@ -99,7 +99,7 @@ def generate_specific_latex(sentence, gold_entity_list, pred_entity_list):
         if start_pos not in segment_dict:
             segment_dict[start_pos] = segment
     sorted_segment = []
-    for key in sorted(segment_dict.iterkeys()):
+    for key in sorted(segment_dict.keys()):
         sorted_segment.append(segment_dict[key])
     output_string = ""
     for segment in sorted_segment:
@@ -166,13 +166,13 @@ def generate_overlap(sentence, match_segment):
     overlap_words = "".join(sentence[overlap_start:overlap_end])
     if front_words:
         if front_flag == "P":
-            output_string += "\underline{\\text{"+ front_words + "}}"
+            output_string += "\\underline{\\text{"+ front_words + "}}"
         else:
             output_string += "\overline{\\text{"+ front_words + "}}"
-    output_string += "\overline{\underline{\\text{"+ overlap_words + "}}}"
+    output_string += "\overline{\\underline{\\text{"+ overlap_words + "}}}"
     if back_words:
         if back_flag == "P":
-            output_string += "\underline{\\text{"+ back_words + "}}"
+            output_string += "\\underline{\\text{"+ back_words + "}}"
         else:
             output_string += "\overline{\\text{"+ back_words + "}}"
     output_string += "$}$^{{\color{blue}{"+gold_type+"}}}_{{\color{red}{"+pred_type+"}}}$"
@@ -187,7 +187,7 @@ def generate_match(sentence, match_segment):
     start = int(pos[0])
     end = int(pos[1])
     words = sentence[start:end+1]
-    output_string = "\colorbox{green!30}{$\underline{\overline{\\text{" +''.join(words)+"}}}$}$^{{\color{blue}{"+entity_type+"}}}_{{\color{red}{"+entity_type+"}}}$"
+    output_string = "\colorbox{green!30}{$\\underline{\overline{\\text{" +''.join(words)+"}}}$}$^{{\color{blue}{"+entity_type+"}}}_{{\color{red}{"+entity_type+"}}}$"
     return output_string
 
 def generate_not_entity(sentence, match_segment):
@@ -216,7 +216,7 @@ def generate_pred_left(sentence, match_segment):
     start = int(pos[0])
     end = int(pos[1])
     words = sentence[start:end+1]
-    output_string = "\colorbox{red!30}{$\underline{\\text{" +''.join(words)+"}}$}$_{{\color{red}{"+entity_type+"}}}$"
+    output_string = "\colorbox{red!30}{$\\underline{\\text{" +''.join(words)+"}}$}$_{{\color{red}{"+entity_type+"}}}$"
     return output_string
 
 
@@ -233,7 +233,7 @@ def generate_specific_segment(sentence, gold_entity_list, pred_entity_list):
     for entity in pred_entity_list:
         if entity not in gold_entity_list:
             pred_left.append(entity)
-    print "match:",matched_entity
+    print("match:",matched_entity)
     overlaped_entity = []
     gold_overlaped = []
     pred_overlaped = []
@@ -254,7 +254,7 @@ def generate_specific_segment(sentence, gold_entity_list, pred_entity_list):
         gold_left.remove(entity)
     for entity in pred_overlaped:
         pred_left.remove(entity)
-    print "overlap:",overlaped_entity
+    print("overlap:",overlaped_entity)
     new_gold_left = []
     new_pred_left = []
     for entity in gold_left:
@@ -262,8 +262,8 @@ def generate_specific_segment(sentence, gold_entity_list, pred_entity_list):
     for entity in pred_left:
         new_pred_left.append('P'+entity)
 
-    print "final gold:",new_gold_left
-    print "final pred:",new_pred_left
+    print("final gold:",new_gold_left)
+    print("final pred:",new_pred_left)
     final_segment = matched_entity + overlaped_entity + new_gold_left + new_pred_left
     matched_flag = [0]*sent_length
     for entity in final_segment:
@@ -289,8 +289,7 @@ def generate_specific_segment(sentence, gold_entity_list, pred_entity_list):
             if start != -1:
                 final_segment.append("N["+str(start)+","+str(idx-1)+"]")
                 start = -1
-    print "final",final_segment
-    print
+    print("final",final_segment)
     # print "match:",generate_match(sentence,matched_entity[0])
     # print "overlap:",generate_overlap(sentence,overlaped_entity[0])
     # print "no entity:",generate_not_entity(sentence,final_segment[-1])
@@ -488,16 +487,16 @@ def calculate_average(input_array):
 def write_head(out_file):
     out_file.write("%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%\n")
     out_file.write("\documentclass[runningheads,a4paper]{llncs}\n")
-    out_file.write("\usepackage{amssymb}\n")
+    out_file.write("\\usepackage{amssymb}\n")
     out_file.write("\setcounter{tocdepth}{3}\n")
-    out_file.write("\usepackage{graphicx}\n")
-    out_file.write("\usepackage{multirow}\n")
-    out_file.write("\usepackage{subfigure}\n")
-    out_file.write("\usepackage{amsmath}\n")
-    out_file.write("\usepackage{CJK}\n")
-    out_file.write("\usepackage{color}\n")
-    out_file.write("\usepackage{xcolor}\n")
-    out_file.write("\usepackage{url}\n")
+    out_file.write("\\usepackage{graphicx}\n")
+    out_file.write("\\usepackage{multirow}\n")
+    out_file.write("\\usepackage{subfigure}\n")
+    out_file.write("\\usepackage{amsmath}\n")
+    out_file.write("\\usepackage{CJK}\n")
+    out_file.write("\\usepackage{color}\n")
+    out_file.write("\\usepackage{xcolor}\n")
+    out_file.write("\\usepackage{url}\n")
     out_file.write("\\begin{document}\n")
     out_file.write("\\begin{CJK*}{UTF8}{gbsn}\n")
     out_file.write("\mainmatter  % start of an individual contribution\n")

@@ -6,10 +6,10 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from Tkinter import *
-from ttk import *#Frame, Button, Label, Style, Scrollbar
-import tkFileDialog
-import tkFont
+from tkinter import *
+from tkinter.ttk import *#Frame, Button, Label, Style, Scrollbar
+import tkinter.filedialog
+import tkinter.font
 import re
 from collections import deque
 import pickle
@@ -27,31 +27,31 @@ class Example(Frame):
         self.colorAllChunk = True
         self.history = deque(maxlen=20)
         self.currentContent = deque(maxlen=1)
-        self.pressCommand = {'a':u"参与者",
-                             'b':u"动作",
-                             'c':u"对象",
-                             'd':u"状态",
-                             'e':u"时间",
-                             'f':u"地点",
-                             'g':u"金额",
-                             'h':u"内容",
-                             'i':u"Transaction-方式", 
-                             'j':u"Peron-原单位",
-                             'k':u"Per-新单位",
-                             'l':u"Per-原职务",
-                             'm':u"Per-新职务",
-                             'n':u"Quantity-指标",
-                             'o':u"Q-对比值",
-                             'p':u"Q-当前值",
-                             'r':u"Q-变化趋势幅度",
-                             's':u"Q-对比时间",
-                             't':u"Policy-影响行业",
-                             'u':u"Pol-鼓励限制",
-                             'v':u"Project-主导方",
-                             'w':u"Pro-投资方",
-                             'x':u"Pro-承建方",
-                             'y':u"Pro-开工时间",
-                             'z':u"Pro-完成时间"
+        self.pressCommand = {'a':"参与者",
+                             'b':"动作",
+                             'c':"对象",
+                             'd':"状态",
+                             'e':"时间",
+                             'f':"地点",
+                             'g':"金额",
+                             'h':"内容",
+                             'i':"Transaction-方式", 
+                             'j':"Peron-原单位",
+                             'k':"Per-新单位",
+                             'l':"Per-原职务",
+                             'm':"Per-新职务",
+                             'n':"Quantity-指标",
+                             'o':"Q-对比值",
+                             'p':"Q-当前值",
+                             'r':"Q-变化趋势幅度",
+                             's':"Q-对比时间",
+                             't':"Policy-影响行业",
+                             'u':"Pol-鼓励限制",
+                             'v':"Project-主导方",
+                             'w':"Pro-投资方",
+                             'x':"Pro-承建方",
+                             'y':"Pro-开工时间",
+                             'z':"Pro-完成时间"
                                 }
         self.allKey = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.numberKey = "0123456789"
@@ -95,7 +95,7 @@ class Example(Frame):
         
         self.lbl = Label(self, text="File: no file is opened")
         self.lbl.grid(sticky=W, pady=4, padx=5)
-        self.fnt = tkFont.Font(font=(self.textFontStyle,20,"bold"),size=self.textRow, underline=0)
+        self.fnt = tkinter.font.Font(font=(self.textFontStyle,20,"bold"),size=self.textRow, underline=0)
         self.text = Text(self, font=self.fnt, selectbackground=self.selectColor)
         self.text.grid(row=1, column=0, columnspan=self.textColumn, rowspan=self.textRow, padx=12,pady=12, sticky=E+W+S+N)
 
@@ -186,7 +186,7 @@ class Example(Frame):
 
     def increaseEventId(self):
         if self.debug:
-            print "Action Track: increaseEventId"
+            print("Action Track: increaseEventId")
         if self.currentEventId == "":
             self.currentEventId = "1"
         else:
@@ -197,7 +197,7 @@ class Example(Frame):
 
     def decreaseEventId(self):
         if self.debug:
-            print "Action Track: decreaseEventId"
+            print("Action Track: decreaseEventId")
         if self.currentEventId == "":
             self.currentEventId = "0"
         else:
@@ -208,7 +208,7 @@ class Example(Frame):
 
     def EventIdEnter(self,event):
         if self.debug:
-            print "Action Track: EventIdEnter"
+            print("Action Track: EventIdEnter")
         content = self.ManualEventIdEntry.get()
         self.currentEventId = content
         self.EventIdString.set("MaxId: %s\nCurId: %s" % (self.maxEventId, self.currentEventId))
@@ -216,15 +216,15 @@ class Example(Frame):
     
     def numberModel(self, event):
         if self.debug:
-            print "Action Track: numberModel"
-        print "Block text."
+            print("Action Track: numberModel")
+        print("Block text.")
         if self.currentEventId != "":
             self.currentEventId = str(int(self.currentEventId)*10 + int(event.char))
         else:
             self.currentEventId = event.char
         if int(self.currentEventId) > self.maxEventId:
             self.maxEventId = int(self.currentEventId)
-        print("Current event id: %s, Max event id: %s"%(self.currentEventId, self.maxEventId))
+        print(("Current event id: %s, Max event id: %s"%(self.currentEventId, self.maxEventId)))
         eventIds = ("Max_Id: %s\nCur_Id: %s" % (self.maxEventId, self.currentEventId))
         self.EventId.config(text=eventIds)
         self.text.config(state=DISABLED)
@@ -232,7 +232,7 @@ class Example(Frame):
     ## cursor index show with the left click
     def singleLeftClick(self, event):
         if self.debug:
-            print "Action Track: singleLeftClick"
+            print("Action Track: singleLeftClick")
         cursor_index = self.text.index(INSERT) 
         row_column = cursor_index.split('.')
         cursor_text = ("RowId: %s\nColId: %s" % (row_column[0], row_column[-1]))
@@ -242,7 +242,7 @@ class Example(Frame):
     ## TODO: select entity by double left click
     def doubleLeftClick(self, event):
         if self.debug:
-            print "Action Track: doubleLeftClick"
+            print("Action Track: doubleLeftClick")
         pass
         # cursor_index = self.text.index(INSERT)
         # start_index = ("%s - %sc" % (cursor_index, 5))
@@ -254,11 +254,11 @@ class Example(Frame):
     ## Disable right click default copy selection behaviour
     def rightClick(self, event):
         if self.debug:
-            print "Action Track: rightClick"
+            print("Action Track: rightClick")
         try:
             firstSelection_index = self.text.index(SEL_FIRST)
             cursor_index = self.text.index(SEL_LAST)
-            content = self.text.get('1.0',"end-1c").encode('utf-8')
+            content = self.text.get('1.0',"end-1c")
             self.writeFile(self.fileName, content, cursor_index)
         except TclError:
             pass
@@ -267,7 +267,7 @@ class Example(Frame):
 
     def onOpen(self):
         ftypes = [('all files', '.*'), ('text files', '.txt'), ('ann files', '.ann')]
-        dlg = tkFileDialog.Open(self, filetypes = ftypes)
+        dlg = tkinter.filedialog.Open(self, filetypes = ftypes)
         # file_opt = options =  {}
         # options['filetypes'] = [('all files', '.*'), ('text files', '.txt')]
         # dlg = tkFileDialog.askopenfilename(**options)
@@ -283,7 +283,7 @@ class Example(Frame):
             self.setCursorLabel(self.text.index(INSERT))
 
     def readFile(self, filename):
-        f = open(filename, "rU")
+        f = open(filename, "rU", encoding='utf-8')
         text = f.read()
         self.fileName = filename
         return text
@@ -293,7 +293,7 @@ class Example(Frame):
         _size = value
         _weight="bold"
         _underline=0
-        fnt = tkFont.Font(family= _family,size= _size,weight= _weight,underline= _underline)
+        fnt = tkinter.font.Font(family= _family,size= _size,weight= _weight,underline= _underline)
         Text(self, font=fnt)
     
     def setNameLabel(self, new_file):
@@ -301,14 +301,14 @@ class Example(Frame):
 
     def setCursorLabel(self, cursor_index):
         if self.debug:
-            print "Action Track: setCursorLabel"
+            print("Action Track: setCursorLabel")
         row_column = cursor_index.split('.')
         cursor_text = ("RowId:  %s\nColId:  %s" % (row_column[0], row_column[-1]))
         self.cursorIndex.config(text=cursor_text)
 
     def returnButton(self):
         if self.debug:
-            print "Action Track: returnButton"
+            print("Action Track: returnButton")
         self.pushToHistory()
         # self.returnEnter(event)
         content = self.entry.get()
@@ -319,7 +319,7 @@ class Example(Frame):
 
     def returnEnter(self,event):
         if self.debug:
-            print "Action Track: returnEnter"
+            print("Action Track: returnEnter")
         self.pushToHistory()
         content = self.entry.get()
         self.clearCommand()
@@ -330,9 +330,9 @@ class Example(Frame):
     def textReturnEnter(self,event):
         press_key = event.char
         if self.debug:
-            print "Action Track: textReturnEnter, press:",press_key
+            print("Action Track: textReturnEnter, press:",press_key)
         self.pushToHistory()
-        print "event: ", press_key
+        print("event: ", press_key)
         # content = self.text.get()
         # self.clearCommand()
         self.text.configure(state='normal')
@@ -343,7 +343,7 @@ class Example(Frame):
 
     def backToHistory(self,event):
         if self.debug:
-            print "Action Track: backToHistory"
+            print("Action Track: backToHistory")
         if len(self.history) > 0:
             historyCondition = self.history.pop()
             # print "history condition: ", historyCondition
@@ -353,33 +353,32 @@ class Example(Frame):
             # print "get history cursor: ", cursorIndex
             self.writeFile(self.fileName, historyContent, cursorIndex)
         else:
-            print "History is empty!"
+            print("History is empty!")
         self.text.insert(INSERT, 'p')   # add a word as pad for key release delete
 
     def keepCurrent(self, event):
         if self.debug:
-            print "Action Track: keepCurrent"
-        print("keep current, insert:%s"%(INSERT))
-        print "before:", self.text.index(INSERT)
+            print("Action Track: keepCurrent")
+        print(("keep current, insert:%s"%(INSERT)))
+        print("before:", self.text.index(INSERT))
         self.text.insert(INSERT, 'p')
-        print "after:", self.text.index(INSERT)
+        print("after:", self.text.index(INSERT))
 
     def clearCommand(self):
         if self.debug:
-            print "Action Track: clearCommand"
+            print("Action Track: clearCommand")
         self.entry.delete(0, 'end')
 
 
     def getText(self):
         textContent = self.text.get("1.0","end-1c")
-        textContent = textContent.encode('utf-8')
         return textContent
 
     def executeCursorCommand(self,command):
         if self.debug:
-            print "Action Track: executeCursorCommand"
+            print("Action Track: executeCursorCommand")
         content = self.getText()
-        print("Command:"+command)
+        print(("Command:"+command))
         try:
             firstSelection_index = self.text.index(SEL_FIRST)
             cursor_index = self.text.index(SEL_LAST)
@@ -394,12 +393,11 @@ class Example(Frame):
                 selected_string = new_string
                 cursor_index = "%s - %sc" % (cursor_index, str(len(new_string_list[1])+4))
             if command == "q":
-                print 'q: remove entity label'
+                print('q: remove entity label')
             else:
                 if len(selected_string) > 0:
                     followHalf_content, cursor_index = self.replaceString(followHalf_content, selected_string, command, cursor_index)
             content = aboveHalf_content + followHalf_content
-            content = content.encode('utf-8')
             self.writeFile(self.fileName, content, cursor_index)
         except TclError:
             ## not select text
@@ -422,7 +420,7 @@ class Example(Frame):
                 selected_string = new_string
                 cursor_index = line_id + '.'+ str(int(matched_span[1])-(len(new_string_list[1])+4))
                 if command == "q":
-                    print 'q: remove entity label'
+                    print('q: remove entity label')
                 else:
                     if len(selected_string) > 0:
                         if command in self.pressCommand:
@@ -435,13 +433,12 @@ class Example(Frame):
             if belowLine_content != '':
                 belowLine_content = '\n' + belowLine_content
             content = aboveLine_content + line + belowLine_content
-            content = content.encode('utf-8')
             self.writeFile(self.fileName, content, cursor_index)
 
 
     def executeEntryCommand(self,command):
         if self.debug:
-            print "Action Track: executeEntryCommand"
+            print("Action Track: executeEntryCommand")
         if len(command) == 0:
             currentCursor = self.text.index(INSERT)
             newCurrentCursor = str(int(currentCursor.split('.')[0])+1) + ".0"
@@ -458,9 +455,9 @@ class Example(Frame):
                     cursor_index = self.text.index(INSERT)
                     newcursor_index = cursor_index.split('.')[0]+"."+str(int(cursor_index.split('.')[1])+select_num)
                     # print "new cursor position: ", select_num, " with ", newcursor_index, "with ", newcursor_index
-                    selected_string = self.text.get(cursor_index, newcursor_index).encode('utf-8')
-                    aboveHalf_content = self.text.get('1.0',cursor_index).encode('utf-8')
-                    followHalf_content = self.text.get(cursor_index, "end-1c").encode('utf-8')
+                    selected_string = self.text.get(cursor_index, newcursor_index)
+                    aboveHalf_content = self.text.get('1.0',cursor_index)
+                    followHalf_content = self.text.get(cursor_index, "end-1c")
                     if command in self.pressCommand:
                         if len(selected_string) > 0:
                             # print "insert index: ", self.text.index(INSERT) 
@@ -471,15 +468,15 @@ class Example(Frame):
 
     def deleteTextInput(self,event):
         if self.debug:
-            print "Action Track: deleteTextInput"
+            print("Action Track: deleteTextInput")
         get_insert = self.text.index(INSERT)
-        print "delete insert:",get_insert
+        print("delete insert:",get_insert)
         insert_list = get_insert.split('.')
         last_insert = insert_list[0] + "." + str(int(insert_list[1])-1)
-        get_input = self.text.get(last_insert, get_insert).encode('utf-8')
+        get_input = self.text.get(last_insert, get_insert)
         # print "get_input: ", get_input
-        aboveHalf_content = self.text.get('1.0',last_insert).encode('utf-8')
-        followHalf_content = self.text.get(last_insert, "end-1c").encode('utf-8')
+        aboveHalf_content = self.text.get('1.0',last_insert)
+        followHalf_content = self.text.get(last_insert, "end-1c")
         if len(get_input) > 0: 
             followHalf_content = followHalf_content.replace(get_input, '', 1)
         content = aboveHalf_content + followHalf_content
@@ -494,8 +491,8 @@ class Example(Frame):
             newcursor_index = "%s + %sc" % (cursor_index, str(len(self.pressCommand[replaceType])+5))
             # newcursor_index = cursor_indexList[0] + "." + str(int(cursor_indexList[1])+ len(new_string))
         else:
-            print "Invaild command!"  
-            print "cursor index: ", self.text.index(INSERT)  
+            print("Invaild command!")  
+            print("cursor index: ", self.text.index(INSERT))  
             return content, cursor_index
         # print "new string: ", new_string
         # print "find: ", content.find(string)
@@ -511,24 +508,24 @@ class Example(Frame):
         if len(fileName) > 0:
             if ".ann" in fileName:
                 new_name = fileName
-                ann_file = open(new_name, 'w')
+                ann_file = open(new_name, 'w', encoding='utf-8')
                 ann_file.write(content)
                 ann_file.close()
             else:
                 new_name = fileName+'.ann'
-                ann_file = open(new_name, 'w')
+                ann_file = open(new_name, 'w', encoding='utf-8')
                 ann_file.write(content)
                 ann_file.close()   
             # print "Writed to new file: ", new_name 
             self.autoLoadNewFile(new_name, newcursor_index)
             # self.generateSequenceFile()
         else:
-            print "Don't write to empty file!"        
+            print("Don't write to empty file!")        
 
 
     def autoLoadNewFile(self, fileName, newcursor_index):
         if self.debug:
-            print "Action Track: autoLoadNewFile"
+            print("Action Track: autoLoadNewFile")
         if len(fileName) > 0:
             self.text.delete("1.0",END)
             text = self.readFile(fileName)
@@ -542,7 +539,7 @@ class Example(Frame):
 
     def setColorDisplay(self):
         if self.debug:
-            print "Action Track: setColorDisplay"
+            print("Action Track: setColorDisplay")
         self.text.config(insertbackground='red', insertwidth=4, font=self.fnt)
 
         countVar = StringVar()
@@ -601,7 +598,7 @@ class Example(Frame):
 
     def setDisplay(self):
         if self.debug:
-            print "Action Track: setDisplay"
+            print("Action Track: setDisplay")
         self.text.config(insertbackground='red', insertwidth=4)
         self.text.mark_set("matchStart", "1.0")
         self.text.mark_set("matchEnd", "1.0") 
@@ -645,7 +642,7 @@ class Example(Frame):
     
     def pushToHistory(self):
         if self.debug:
-            print "Action Track: pushToHistory"
+            print("Action Track: pushToHistory")
         currentList = []
         content = self.getText()
         cursorPosition = self.text.index(INSERT)
@@ -656,7 +653,7 @@ class Example(Frame):
 
     def pushToHistoryEvent(self,event):
         if self.debug:
-            print "Action Track: pushToHistoryEvent"
+            print("Action Track: pushToHistoryEvent")
         currentList = []
         content = self.getText()
         cursorPosition = self.text.index(INSERT)
@@ -668,7 +665,7 @@ class Example(Frame):
     ## update shortcut map
     def renewPressCommand(self):
         if self.debug:
-            print "Action Track: renewPressCommand"
+            print("Action Track: renewPressCommand")
         seq = 0
         new_dict = {}
         listLength = len(self.labelEntryList)
@@ -720,12 +717,12 @@ class Example(Frame):
 
     def generateSequenceFile(self):
         if (".ann" not in self.fileName) and (".txt" not in self.fileName): 
-            print "Export only works on filename ended in .ann or .txt! Please rename file."
+            print("Export only works on filename ended in .ann or .txt! Please rename file.")
             return -1
-        fileLines = open(self.fileName, 'rU').readlines()
+        fileLines = open(self.fileName, 'rU', encoding='utf-8').readlines()
         lineNum = len(fileLines)
         new_filename = self.fileName.split('.ann')[0]+ '.anns'
-        seqFile = open(new_filename, 'w')
+        seqFile = open(new_filename, 'w', encoding='utf-8')
         for line in fileLines:
             if len(line) <= 2:
                 seqFile.write('\n')
@@ -737,12 +734,12 @@ class Example(Frame):
                 ## use null line to seperate sentences
                 seqFile.write('\n')
         seqFile.close()
-        print "Exported file into sequence style in file: ",new_filename
-        print "Line number:",lineNum
+        print("Exported file into sequence style in file: ",new_filename)
+        print("Line number:",lineNum)
 
 
 def getWordTagPairs(tagedSentence, seged=True, tagScheme="BMES", onlyNP=False, entityRe=r'\[\@.*?\#.*?\*\]'):
-    newSent = tagedSentence.strip('\n').decode('utf-8')
+    newSent = tagedSentence.strip('\n')
     filterList = re.findall(entityRe, newSent)
     newSentLength = len(newSent)
     
@@ -782,14 +779,14 @@ def getWordTagPairs(tagedSentence, seged=True, tagScheme="BMES", onlyNP=False, e
             if chunk_list[idx][1] == chunk_list[idx-1][2]:
                 full_list.append(chunk_list[idx])
             elif chunk_list[idx][1] < chunk_list[idx-1][2]:
-                print "ERROR: found pattern has overlap!", chunk_list[idx][1], ' with ', chunk_list[idx-1][2]
+                print("ERROR: found pattern has overlap!", chunk_list[idx][1], ' with ', chunk_list[idx-1][2])
             else:
                 full_list.append([newSent[chunk_list[idx-1][2]:chunk_list[idx][1]], chunk_list[idx-1][2], chunk_list[idx][1], False])
                 full_list.append(chunk_list[idx])
 
         if idx == len(chunk_list) - 1 :
             if chunk_list[idx][2] > newSentLength:
-                print "ERROR: found pattern position larger than sentence length!"
+                print("ERROR: found pattern position larger than sentence length!")
             elif chunk_list[idx][2] < newSentLength:
                 full_list.append([newSent[chunk_list[idx][2]:newSentLength], chunk_list[idx][2], newSentLength, False])
             else:
@@ -803,7 +800,7 @@ def turnFullListToOutputPair(fullList, seged=True, tagScheme="BMES", onlyNP=Fals
         if eachList[3]:
             contLabelList = eachList[0].strip('[@]').rsplit('#', 1)
             if len(contLabelList) != 2:
-                print "Error: sentence format error!"
+                print("Error: sentence format error!")
             label = contLabelList[1].strip('*')
             if seged:
                 contLabelList[0] = contLabelList[0].split()
@@ -820,7 +817,7 @@ def turnFullListToOutputPair(fullList, seged=True, tagScheme="BMES", onlyNP=Fals
                 if basicContent == ' ': 
                     continue
                 pair = basicContent + ' ' + 'O\n'
-                pairList.append(pair.encode('utf-8'))
+                pairList.append(pair)
     return pairList
 
 
@@ -830,7 +827,7 @@ def outputWithTagScheme(input_list, label, tagScheme="BMES"):
     if tagScheme=="BMES":
         if list_length ==1:
             pair = input_list[0]+ ' ' + 'S-' + label + '\n'
-            output_list.append(pair.encode('utf-8'))
+            output_list.append(pair)
         else:
             for idx in range(list_length):
                 if idx == 0:
@@ -839,14 +836,14 @@ def outputWithTagScheme(input_list, label, tagScheme="BMES"):
                     pair = input_list[idx]+ ' ' + 'E-' + label + '\n'
                 else:
                     pair = input_list[idx]+ ' ' + 'M-' + label + '\n'
-                output_list.append(pair.encode('utf-8'))
+                output_list.append(pair)
     else:
         for idx in range(list_length):
             if idx == 0:
                 pair = input_list[idx]+ ' ' + 'B-' + label + '\n'
             else:
                 pair = input_list[idx]+ ' ' + 'I-' + label + '\n'
-            output_list.append(pair.encode('utf-8'))
+            output_list.append(pair)
     return output_list
 
 
@@ -872,7 +869,7 @@ def decompositCommand(command_string):
 
 def main():
     print("SUTDAnnotator launched!")
-    print(("OS:%s")%(platform.system()))
+    print((("OS:%s")%(platform.system())))
     root = Tk()
     root.geometry("1300x700+200+200")
     app = Example(root)

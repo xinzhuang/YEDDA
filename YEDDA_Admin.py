@@ -6,10 +6,10 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from Tkinter import *
-from ttk import *#Frame, Button, Label, Style, Scrollbar
-import tkFileDialog
-import tkFont
+from tkinter import *
+from tkinter.ttk import *#Frame, Button, Label, Style, Scrollbar
+import tkinter.filedialog
+import tkinter.font
 import re
 from collections import deque
 import pickle
@@ -18,7 +18,7 @@ import platform
 from utils.recommend import *
 from utils.metric4ann import *
 from utils.compareAnn import *
-import tkMessageBox
+import tkinter.messagebox
 
 
 class Example(Frame):
@@ -117,14 +117,14 @@ class Example(Frame):
 
         win2.minsize(30,30)
     def selection(self):
-        print self.popup.selection
+        print(self.popup.selection)
         
 
     def multiFiles(self):
         ftypes = [('ann files', '.ann')]
-        filez = tkFileDialog.askopenfilenames(parent=self.parent, filetypes = ftypes, title='Choose a file')
+        filez = tkinter.filedialog.askopenfilenames(parent=self.parent, filetypes = ftypes, title='Choose a file')
         if len(filez) < 2:
-            tkMessageBox.showinfo("Monitor Error", "Selected less than two files!\n\nPlease select at least two files!")
+            tkinter.messagebox.showinfo("Monitor Error", "Selected less than two files!\n\nPlease select at least two files!")
         else:
             result_matrix =  generate_report_from_list(filez)
             self.ChildWindow(filez, result_matrix)
@@ -132,18 +132,18 @@ class Example(Frame):
 
     def compareTwoFiles(self):
         ftypes = [('ann files', '.ann')]
-        filez = tkFileDialog.askopenfilenames(parent=self.parent, filetypes = ftypes, title='Choose a file')
+        filez = tkinter.filedialog.askopenfilenames(parent=self.parent, filetypes = ftypes, title='Choose a file')
         if len(filez) != 2:
             tkMessageBox.showinfo("Compare Error", "Please select exactly two files!")
         else:
             f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".tex")
             write_result = compareBoundary(filez[0],filez[1],f)
             if write_result:
-                tkMessageBox.showinfo("Latex Generate", "Latex file generated successfully!\n\nSaved to "+ f.name)
+                tkinter.messagebox.showinfo("Latex Generate", "Latex file generated successfully!\n\nSaved to "+ f.name)
                 # import os
                 # os.system("pdflatex "+ f.name)
             else:
-                tkMessageBox.showinfo("Latex Error", "Latex generated Error, two files don't have same sentence number!")
+                tkinter.messagebox.showinfo("Latex Error", "Latex generated Error, two files don't have same sentence number!")
             f.close()
             
 

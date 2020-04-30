@@ -252,19 +252,19 @@ def generate_f_value_report():
             result_matrix_ignore_1_layer[idy][idx] = f1
             result_matrix_ignore_2_layer[idx][idy] = f2
             result_matrix_ignore_2_layer[idy][idx] = f2
-    print 
+    print() 
     ## show final results
-    print "FINAL REPORT:  all_catagory/ignore_sub_catogary/entity_chunk"
-    print "F1-value".rjust(10),
+    print("FINAL REPORT:  all_catagory/ignore_sub_catogary/entity_chunk")
+    print("F1-value".rjust(10), end=' ')
     for idx in range(file_num):
-        print simplified_name(file_list[idx]).rjust(15), 
-    print 
+        print(simplified_name(file_list[idx]).rjust(15), end=' ') 
+    print() 
     for idx in range(file_num):
-        print simplified_name(file_list[idx]).rjust(15), 
+        print(simplified_name(file_list[idx]).rjust(15), end=' ') 
         for idy in range(file_num):
             result = output_model(result_matrix[idx][idy], result_matrix_ignore_1_layer[idx][idy], result_matrix_ignore_2_layer[idx][idy])
-            print result.rjust(15),
-        print
+            print(result.rjust(15), end=' ')
+        print()
 
 
 def calculate_average(input_array):
